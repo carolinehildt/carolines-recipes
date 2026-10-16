@@ -13,32 +13,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
-  <script>
-  const auth = firebase.auth();
-  const provider = new firebase.auth.GoogleAuthProvider();
 
-  // Sign In Function
-  function login() {
-    auth.signInWithPopup(provider).catch(error => console.error(error));
-  }
-
-  // Sign Out Function
-  function logout() {
-    auth.signOut();
-  }
-
-  // Listen for Auth state changes
-  auth.onAuthStateChanged(user => {
-    const addBtn = document.getElementById('add-recipe-btn'); // Your '+' button ID
-    if (user) {
-      console.log("Logged in as:", user.email);
-      if (addBtn) addBtn.style.display = 'block';
-    } else {
-      console.log("Not logged in");
-      if (addBtn) addBtn.style.display = 'none';
-    }
-  });
-</script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -698,9 +673,37 @@ const firebaseConfig = {
   measurementId: "G-DQ5BVQQ78S"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+  <script>
+  // Initialize Firebase
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  // Sign In Function
+  function login() {
+    auth.signInWithPopup(provider).catch(error => console.error(error));
+  }
+
+  // Sign Out Function
+  function logout() {
+    auth.signOut();
+  }
+
+  // Listen for Auth state changes
+  auth.onAuthStateChanged(user => {
+    const addBtn = document.getElementById('add-recipe-btn'); // Your '+' button ID
+    if (user) {
+      console.log("Logged in as:", user.email);
+      if (addBtn) addBtn.style.display = 'block';
+    } else {
+      console.log("Not logged in");
+      if (addBtn) addBtn.style.display = 'none';
+    }
+  });
+</script>
 
 let recipes = [];
 let activeFilter = 'all';
