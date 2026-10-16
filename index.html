@@ -9,9 +9,36 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- FIREBASE SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
+  <script>
+  const auth = firebase.auth();
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  // Sign In Function
+  function login() {
+    auth.signInWithPopup(provider).catch(error => console.error(error));
+  }
+
+  // Sign Out Function
+  function logout() {
+    auth.signOut();
+  }
+
+  // Listen for Auth state changes
+  auth.onAuthStateChanged(user => {
+    const addBtn = document.getElementById('add-recipe-btn'); // Your '+' button ID
+    if (user) {
+      console.log("Logged in as:", user.email);
+      if (addBtn) addBtn.style.display = 'block';
+    } else {
+      console.log("Not logged in");
+      if (addBtn) addBtn.style.display = 'none';
+    }
+  });
+</script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -481,6 +508,10 @@
   <div class="header-tagline">Personal Recipe Collection</div>
   <h1>Caroline's Recipes</h1>
   <p>Welcome to the World of Caroline through her food:)</p>
+  <div style="margin-top: 15px;">
+    <button onclick="login()" style="padding: 8px 16px; cursor: pointer;">Sign In</button>
+    <button onclick="logout()" style="padding: 8px 16px; cursor: pointer;">Sign Out</button>
+  </div>
 </header>
 
 <div class="controls-wrapper">
